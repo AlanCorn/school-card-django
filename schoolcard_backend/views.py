@@ -31,9 +31,12 @@ class AddStudent(APIView):
         student_id = req["student_id"]
         student_name = req["student_name"]
         student_balance = req["student_balance"]
-        Student(student_id=student_id, student_name=student_name, student_balance=student_balance).save()  # 保存数据
 
-        return Response([{'status': 'OK'}])
+        if len(Student.objects.filter(student_id=student_id)) == 0:
+            Student(student_id=student_id, student_name=student_name, student_balance=student_balance).save()  # 保存数据
+            return Response([{'status': 'OK'}])
+        else:
+            return Response([{'status': 'Failed', 'message': '该学号已注册'}])
 
 
 class CardPay(APIView):
