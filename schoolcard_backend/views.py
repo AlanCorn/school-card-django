@@ -39,6 +39,23 @@ class AddStudent(APIView):
             return Response([{'status': 'Failed', 'message': '该学号已注册'}])
 
 
+class DeleteStudent(APIView):
+    @staticmethod
+    def post(request):
+        """
+        """
+
+        req = request.data  # 前端给的json包数据
+        student_id = req["student_id"]
+
+        if len(Student.objects.filter(student_id=student_id)) != 0:
+            obj = Student.objects.get(student_id=student_id)
+            obj.delete()
+            return Response([{'status': 'OK'}])
+        else:
+            return Response([{'status': 'Failed', 'message': '该学号已注册'}])
+
+
 class CardPay(APIView):
     @staticmethod
     def post(request):
